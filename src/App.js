@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import './App.css';
 import Tile from './components/Tile';
 
+// TODO: change the directory dynamically
 const tileImages = [
-	"https://unsplash.it/200/?image=100",
-	"https://unsplash.it/200/?image=200",
-	"https://unsplash.it/200/?image=300",
-	"https://unsplash.it/200/?image=400",
-	"https://unsplash.it/200/?image=500",
-	"https://unsplash.it/200/?image=600",
-	"https://unsplash.it/200/?image=700",
-	"https://unsplash.it/200/?image=800",
+	"vehicles/1.jpg",
+	"vehicles/2.jpg",
+	"vehicles/3.jpg",
+	"vehicles/4.jpg",
+	"vehicles/5.jpg",
+	"vehicles/6.jpg",
+	"vehicles/7.jpg",
+	"vehicles/8.jpg",
 ]
 
 class App extends Component {

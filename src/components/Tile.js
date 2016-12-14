@@ -10,27 +10,10 @@ class Tile extends Component {
 
   render() {
     let {tile} = this.props;
-    //var selected = tile.selected ? "selected" : "";
     let selected = tile.selected || tile.match ? " flipped" : "";
-    //var className = "list-item tile " + selected;
     let imgUrl = tile.selected ? tile.src : tile.src;
     let match = tile.match ? " match" : "";
 
-    /*
-    if (tile.match) {
-      imgUrl = "";
-    } else if (!tile.selected) {
-      imgUrl = "tile_1.jpg";
-    }
-    */
-    // use cover
-    /*
-    return (
-      <li className={className} onClick={() => this.showTile(tile.id)}>
-        <img src={imgUrl} role="presentation"/>
-      </li>
-    );
-    */
     return (
       <li>
         <section className={"container" + match} onClick={() => this.showTile(tile.id)}>
