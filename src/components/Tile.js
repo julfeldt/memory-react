@@ -3,7 +3,6 @@ import './Tile.css';
 
 class Tile extends Component {
 
-
   showTile(tileId) {
     this.props.showTile(tileId);
   }
@@ -13,13 +12,16 @@ class Tile extends Component {
     let selected = tile.selected || tile.match ? " flipped" : "";
     let imgUrl = tile.selected ? tile.src : tile.src;
     let match = tile.match ? " match" : "";
+    const componentClasses = ['container'];
+    componentClasses.push(match);
+    const backTileImageSrc = `images/back/${this.props.backTileId}.jpg`;
 
     return (
       <li>
-        <section className={"container" + match} onClick={() => this.showTile(tile.id)}>
+        <section className={componentClasses.join("")} onClick={() => this.showTile(tile.id)}>
           <div className={"card" + selected}>
             <figure className="front">
-              <img src="tile_1.jpg" role="presentation"/>
+              <img src={backTileImageSrc} role="presentation"/>
             </figure>
             <figure className="back">
               <img src={imgUrl} role="presentation"/>
