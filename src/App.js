@@ -4,9 +4,8 @@ import Tile from './components/Tile';
 import Panel from './components/Panel';
 
 let backTileId;
-let selectedCategory ="foo";
-
 let tileImages = [];
+let selectedCategory;
 
 // images used for the tiles group by categories
 const allFrontTiles = {
@@ -19,36 +18,44 @@ const allFrontTiles = {
         "vehicles/6.jpg",
         "vehicles/7.jpg",
         "vehicles/8.jpg",
+        "vehicles/8.jpg",
+        "vehicles/8.jpg",
     ],
     animals: [
-        "vehicles/1.jpg",
-        "vehicles/1.jpg",
-        "vehicles/1.jpg",
-        "vehicles/1.jpg",
-        "vehicles/1.jpg",
-        "vehicles/1.jpg",
-        "vehicles/1.jpg",
-        "vehicles/1.jpg",
+        "animals/0.jpg",
+        "animals/1.jpg",
+        "animals/2.jpg",
+        "animals/3.jpg",
+        "animals/4.jpg",
+        "animals/5.jpg",
+        "animals/6.jpg",
+        "animals/7.jpg",
+        "animals/8.jpg",
+        "animals/9.jpg",
     ],
     family: [
-        "vehicles/2.jpg",
-        "vehicles/2.jpg",
-        "vehicles/2.jpg",
-        "vehicles/2.jpg",
-        "vehicles/2.jpg",
-        "vehicles/2.jpg",
-        "vehicles/2.jpg",
-        "vehicles/2.jpg",
+        "family/0.jpg",
+        "family/1.jpg",
+        "family/2.jpg",
+        "family/3.jpg",
+        "family/4.jpg",
+        "family/5.jpg",
+        "family/6.jpg",
+        "family/7.jpg",
+        "family/8.jpg",
+        "family/9.jpg",
     ],
     colors: [
-        "vehicles/3.jpg",
-        "vehicles/3.jpg",
-        "vehicles/3.jpg",
-        "vehicles/3.jpg",
-        "vehicles/3.jpg",
-        "vehicles/3.jpg",
-        "vehicles/3.jpg",
-        "vehicles/3.jpg",
+        "colors/0.jpg",
+        "colors/1.jpg",
+        "colors/2.jpg",
+        "colors/3.jpg",
+        "colors/4.jpg",
+        "colors/5.jpg",
+        "colors/6.jpg",
+        "colors/7.jpg",
+        "colors/8.jpg",
+        "colors/9.jpg",
     ]
 };
 
@@ -99,7 +106,7 @@ class App extends Component {
 
     // TODO: move player stuff to own module ?
     playSound(audioId) {
-        const audio = document.querySelector(`audio[data-key="${audioId}"]`);
+        const audio = document.querySelector(`div[data-category="${selectedCategory}"] audio[data-key="${audioId}"]`);
         if (!audio) {
           return;
         }
@@ -113,7 +120,7 @@ class App extends Component {
         if (audioId > 4) {
             audioId = 0;
         }
-        this.playSound(tileId);
+        this.playSound(audioId);
     }
 
     playMatch() {
@@ -162,7 +169,7 @@ class App extends Component {
                 tiles.forEach(tile => {
                     if (tile.id === tileA.id || tile.id === tileB.id) {
                         tile.match = true;
-                     matchCount++;
+                        matchCount++;
                     }
                 });
             }
@@ -186,7 +193,7 @@ class App extends Component {
     render() {
         return (
           <div className="App">
-            <Panel loadCategory={this.loadCategory} category={selectedCategory} />
+            <Panel loadCategory={this.loadCategory}/>
             <ul className="list">
                 {this.state.tiles.map(tile => {
                   return <Tile key={tile.id} tile={tile} showTile={this.showTile} backTileId={backTileId} />

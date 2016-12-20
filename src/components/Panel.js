@@ -17,25 +17,20 @@ class Panel extends Component {
 
     render() {
         return (
-            <div>
-                <h1 className="category">
-                    {this.props.category}
-                </h1>
-                <ul>
-                    <li>
-                        <button type="button" data-category="vehicles" onClick={this.selectCategory}>Tractor</button>
-                    </li>
-                    <li>
-                        <button type="button" data-category="family" onClick={this.selectCategory}>Family</button>
-                    </li>
-                    <li>
-                        <button type="button" data-category="animals" onClick={this.selectCategory}>Animals</button>
-                    </li>
-                    <li>
-                        <button type="button" data-category="colors" onClick={this.selectCategory}>Colors</button>
-                    </li>
-                </ul>
-            </div>
+            <ul>
+                <li>
+                    <button type="button" data-category="vehicles" onClick={this.selectCategory}>Tractor</button>
+                </li>
+                <li>
+                    <button type="button" data-category="family" onClick={this.selectCategory}>Family</button>
+                </li>
+                <li>
+                    <button type="button" data-category="animals" onClick={this.selectCategory}>Animals</button>
+                </li>
+                <li>
+                    <button type="button" data-category="colors" onClick={this.selectCategory}>Colors</button>
+                </li>
+            </ul>
         );
     }
 }

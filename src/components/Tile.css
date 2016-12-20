@@ -7,8 +7,8 @@ li {
 }
 
 img {
-  height: 200px;
-  width: 200px;
+  height: 154px;
+  width: 154px;
   padding: 1px;
   border: 0px;
 }
@@ -19,8 +19,8 @@ img {
 }
 
 .container {
-  width: 200px;
-  height: 200px;
+  width: 154px;
+  height: 154px;
   position: relative;
   perspective: 800px;
 }
