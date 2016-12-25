@@ -9,6 +9,21 @@ let selectedCategory;
 
 // images used for the tiles group by categories
 const allFrontTiles = {
+    family: [
+        "family/0.jpg",
+        "family/1.jpg",
+        "family/2.jpg",
+        "family/3.jpg",
+        "family/4.jpg",
+        "family/5.jpg",
+        "family/6.jpg",
+        "family/7.jpg",
+        "family/8.jpg",
+        "family/9.jpg",
+        "family/10.jpg",
+        "family/11.jpg",
+        "family/12.jpg",
+    ],
     vehicles: [
         "vehicles/1.jpg",
         "vehicles/2.jpg",
@@ -32,18 +47,6 @@ const allFrontTiles = {
         "animals/7.jpg",
         "animals/8.jpg",
         "animals/9.jpg",
-    ],
-    family: [
-        "family/0.jpg",
-        "family/1.jpg",
-        "family/2.jpg",
-        "family/3.jpg",
-        "family/4.jpg",
-        "family/5.jpg",
-        "family/6.jpg",
-        "family/7.jpg",
-        "family/8.jpg",
-        "family/9.jpg",
     ],
     colors: [
         "colors/0.jpg",
@@ -91,7 +94,7 @@ class App extends Component {
     }
 
     createTiles() {
-        const tiles = [];
+        let tiles = [];
         for (let i = 0; i < tileImages.length * 2; i++) {
             tiles.push({
                 id: i,
@@ -99,8 +102,35 @@ class App extends Component {
                 src: `images/front/${tileImages[i % tileImages.length]}`
             });
         }
+
+        function getRandomTileId(max) {
+            return Math.floor((Math.random() * max));
+        }
+
+        tiles = this.shuffleArray(tiles);
+
+        // randomingly trim exceeding tiles - cleanup needed
+        const max = 20;
+        if (tiles.length > max) {
+            const exclude = [];
+            const diff = tiles.length/2 - max/2;
+            for (let i = 0 ; i < diff ; i++) {
+                while(true) {
+                    let id = getRandomTileId(tiles.length/2);
+                    if (exclude.findIndex(tId => tId === id)) {
+                        const tile = tiles.find(tile => tile.id === id);
+                        exclude.push(tile.src);
+                        break;
+                    }
+                }
+            }
+            tiles = tiles.filter(tile => {
+                return exclude.findIndex(src => src === tile.src) === -1;
+            });
+        }
+
         this.setState({
-            tiles: this.shuffleArray(tiles)
+            tiles: tiles
         });
     }
 
@@ -116,10 +146,6 @@ class App extends Component {
 
     playTile(tileId) {
         let audioId = tileId % tileImages.length;
-        // TODO: make it random
-        if (audioId > 4) {
-            audioId = 0;
-        }
         this.playSound(audioId);
     }
 
