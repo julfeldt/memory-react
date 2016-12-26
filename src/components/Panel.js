@@ -19,7 +19,7 @@ class Panel extends Component {
         return (
             <ul>
                 <li>
-                    <button type="button" data-category="vehicles" onClick={this.selectCategory}>Tractor</button>
+                    <button type="button" data-category="transport" onClick={this.selectCategory}>Transport</button>
                 </li>
                 <li>
                     <button type="button" data-category="family" onClick={this.selectCategory}>Family</button>

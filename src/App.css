@@ -8,6 +8,6 @@ body {
 }
 
 @media screen and (orientation: landscape) {
-   #root { display: none; }
+   #root { display: block; }
    .use-portrait { display: block; }
 }
