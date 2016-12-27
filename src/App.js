@@ -71,6 +71,7 @@ class App extends Component {
       this.state = {};
       this.showTile = this.showTile.bind(this);
       this.loadCategory = this.loadCategory.bind(this);
+      this.generateAudioElements();
     }
 
     componentWillMount() {
@@ -78,6 +79,20 @@ class App extends Component {
         var index =  Math.floor((Math.random() * keys.length));
         index = 0;
         this.loadCategory(keys[index]);
+    }
+
+    generateAudioElements() {
+        Object.keys(allFrontTiles).forEach(category => {
+            const div = document.createElement("div");
+            div.setAttribute("data-category", category);
+            allFrontTiles[category].forEach((entry,index) => {
+                const audio = document.createElement("audio");
+                audio.setAttribute("data-key", index);
+                audio.setAttribute("src", `audio/${category}/${index}.m4a`);
+                div.appendChild(audio);
+                document.body.appendChild(div);
+            });
+        })
     }
 
 
@@ -137,8 +152,8 @@ class App extends Component {
     }
 
     // TODO: move player stuff to own module ?
-    playSound(audioId) {
-        const audio = document.querySelector(`div[data-category="${selectedCategory}"] audio[data-key="${audioId}"]`);
+    playAudio(audioId, category = selectedCategory) {
+        const audio = document.querySelector(`div[data-category="${category}"] audio[data-key="${audioId}"]`);
         if (!audio) {
           return;
         }
@@ -148,11 +163,12 @@ class App extends Component {
 
     playTile(tileId) {
         let audioId = tileId % tileImages.length;
-        this.playSound(audioId);
+        this.playAudio(audioId);
     }
 
     playMatch() {
-        this.playSound("match");
+        const audioId = Math.floor((Math.random() * document.querySelector("div[data-category='match']").children.length));
+        this.playAudio(audioId,"match");
     }
 
     showTile(tileId) {
@@ -162,7 +178,7 @@ class App extends Component {
             return;
         }
 
-        this.playTile(tileId);
+        let matching = false;
 
         const tiles = [];
         const selectedCount = this.state.tiles.reduce((total,tile) => {
@@ -204,7 +220,13 @@ class App extends Component {
 
             if (matchCount === 2) {
                 this.playMatch();
+                matching = true;
             }
+        }
+
+        // Do not play over the found match
+        if (!matching) {
+            this.playTile(tileId);
         }
 
         this.setState({tiles});
