@@ -3,7 +3,8 @@ import './Tile.css';
 
 class Tile extends Component {
 
-  showTile(tileId) {
+  showTile(e,tileId) {
+    e.preventDefault();
     this.props.showTile(tileId);
   }
 
@@ -18,7 +19,7 @@ class Tile extends Component {
 
     return (
       <li>
-        <section className={componentClasses.join("")} onClick={() => this.showTile(tile.id)}>
+        <section className={componentClasses.join("")} onTouchEnd={(e) => this.showTile(e,tile.id)} onClick={(e) => this.showTile(e,tile.id)}>
           <div className={"card" + selected}>
             <figure className="front">
               <img src={backTileImageSrc} role="presentation"/>
