@@ -74,13 +74,6 @@ class App extends Component {
       this.generateAudioElements();
     }
 
-    componentWillMount() {
-        const keys = Object.keys(allFrontTiles);
-        var index =  Math.floor((Math.random() * keys.length));
-        index = 0;
-        this.loadCategory(keys[index]);
-    }
-
     generateAudioElements() {
         Object.keys(allFrontTiles).forEach(category => {
             const div = document.createElement("div");
@@ -245,7 +238,7 @@ class App extends Component {
           <div className="App">
             <Panel loadCategory={this.loadCategory}/>
             <ul className="list">
-                {this.state.tiles.map(tile => {
+                {this.state.tiles && this.state.tiles.map(tile => {
                   return <Tile key={tile.id} tile={tile} showTile={this.showTile} backTileId={backTileId} />
                 })}
             </ul>

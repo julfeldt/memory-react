@@ -8,6 +8,12 @@ li {
     list-style-type: none;
 }
 
-li button {
+.panel img {
   padding: 25px;
+  height: 50px;
+  width: 50px;
+}
+
+.selected img {
+  transform: scale(1.5, 1.5);
 }

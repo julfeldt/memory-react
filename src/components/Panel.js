@@ -1,34 +1,49 @@
 import React, { Component } from 'react';
 import './Panel.css';
 
+let category;
+
 class Panel extends Component {
 
     constructor() {
       super();
+      this.handleSelectCategory = this.handleSelectCategory.bind(this);
       this.selectCategory = this.selectCategory.bind(this);
     }
 
+    handleSelectCategory(e) {
+        e.preventDefault();
+        this.selectCategory(e.target.dataset.category);
+    }
 
-    selectCategory(e) {
-        const category = e.target.dataset.category;
+    selectCategory(cat) {
+        category = cat;
         this.props.loadCategory(category);
         this.setState({category});
     }
 
+    isSelected(name) {
+        return name === category ? "selected" : "";
+    }
+
+    componentDidMount(){
+        this.selectCategory("family");
+    }
+
     render() {
         return (
-            <ul>
-                <li>
-                    <button type="button" data-category="transport" onClick={this.selectCategory}>Transport</button>
+            <ul className="panel">
+                <li className={this.isSelected("family")}>
+                    <img src="images/panel/family_icon.png" alt="family" data-category="family" onClick={this.handleSelectCategory} onTouchEnd={this.handleSelectCategory}/>
                 </li>
-                <li>
-                    <button type="button" data-category="family" onClick={this.selectCategory}>Family</button>
+                <li className={this.isSelected("transport")}>
+                   <img src="images/panel/transport_icon.png" alt="transport" data-category="transport" onClick={this.handleSelectCategory} onTouchEnd={this.handleSelectCategory}/>
                 </li>
-                <li>
-                    <button type="button" data-category="animals" onClick={this.selectCategory}>Animals</button>
+                <li className={this.isSelected("animals")}>
+                    <img src="images/panel/animals_icon.png" alt="animals" data-category="animals" onClick={this.handleSelectCategory} onTouchEnd={this.handleSelectCategory}/>
                 </li>
-                <li>
-                    <button type="button" data-category="colors" onClick={this.selectCategory}>Colors</button>
+                <li className={this.isSelected("colors")}>
+                    <img src="images/panel/colors_icon.png" alt="colors" data-category="colors" onClick={this.handleSelectCategory} onTouchEnd={this.handleSelectCategory}/>
                 </li>
             </ul>
         );
