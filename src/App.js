@@ -7,6 +7,9 @@ let backTileId;
 let tileImages = [];
 let selectedCategory;
 
+// keep a reference to it, so it can be stopped anytime
+const winAudio = document.querySelector("div[data-category='end'] audio[data-key='0']");
+
 // images used for the tiles group by categories
 const allFrontTiles = {
     family: [
@@ -61,6 +64,18 @@ const allFrontTiles = {
         "colors/7.jpg",
         "colors/8.jpg",
         "colors/9.jpg",
+    ],
+    numbers: [
+        "numbers/0.png",
+        "numbers/1.png",
+        "numbers/2.png",
+        "numbers/3.png",
+        "numbers/4.png",
+        "numbers/5.png",
+        "numbers/6.png",
+        "numbers/7.png",
+        "numbers/8.png",
+        "numbers/9.png",
     ]
 };
 
@@ -164,6 +179,11 @@ class App extends Component {
         this.playAudio(audioId,"match");
     }
 
+    playEnd() {
+        winAudio.currentTime = 0;
+        winAudio.play();
+    }
+
     showTile(tileId) {
 
         var tile = this.state.tiles.find(tile => tile.id === tileId);
@@ -202,11 +222,15 @@ class App extends Component {
             const tileA = selected[0];
             const tileB = selected[1];
             let matchCount = 0;
+            let matchTotal = 0;
             if (tileA.src === tileB.src) {
                 tiles.forEach(tile => {
                     if (tile.id === tileA.id || tile.id === tileB.id) {
                         tile.match = true;
                         matchCount++;
+                    }
+                    if (tile.match) {
+                        matchTotal++;
                     }
                 });
             }
@@ -214,6 +238,11 @@ class App extends Component {
             if (matchCount === 2) {
                 this.playMatch();
                 matching = true;
+            }
+
+            // If all tiles are matched, the game is over so the play the winning sound.
+            if (matchTotal === 20) {
+                this.playEnd();
             }
         }
 
@@ -227,6 +256,10 @@ class App extends Component {
 
     // load new tiles with the selected category
     loadCategory(category) {
+        if (!winAudio.paused) {
+            // kill the end music, since a new game is started
+            winAudio.pause();
+        }
         tileImages = [...allFrontTiles[category]];
         selectedCategory = category;
         backTileId = Object.keys(allFrontTiles).findIndex(c => c === category);

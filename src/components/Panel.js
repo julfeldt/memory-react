@@ -45,6 +45,9 @@ class Panel extends Component {
                 <li className={this.isSelected("colors")}>
                     <img src="images/panel/colors_icon.png" alt="colors" data-category="colors" onClick={this.handleSelectCategory} onTouchEnd={this.handleSelectCategory}/>
                 </li>
+                <li className={this.isSelected("numbers")}>
+                    <img src="images/panel/numbers_icon.png" alt="numbers" data-category="numbers" onClick={this.handleSelectCategory} onTouchEnd={this.handleSelectCategory}/>
+                </li>
             </ul>
         );
     }
