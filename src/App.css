@@ -3,11 +3,53 @@
   flex-wrap: wrap;
 }
 
-body {
-	background-color: lightblue;
+.use-portrait {
+	display: none;
+}
+
+.retry-container {
+	visibility: hidden;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   position: fixed;
+   top: 0;
+   right: 0;
+   bottom: 0;
+   left: 0;
+   z-index: 10;
+}
+
+.visible {
+	visibility: visible;
+}
+
+.retry {
+	height: 200px;
+	width: 200px;
 }
 
 @media screen and (orientation: landscape) {
-   #root { display: block; }
-   .use-portrait { display: block; }
+   .game {
+   	display: none;
+   }
+   .use-portrait {
+	   display: flex;
+	   align-items: center;
+	   justify-content: center;
+	   position: fixed;
+	   top: 0;
+	   right: 0;
+	   bottom: 0;
+	   left: 0;
+   }
+
+   .ipad {
+   	height: 300px;
+   	width: 300px;
+   	margin: auto;
+     -webkit-animation: spin 4s linear infinite;
+   }
+
+   @-webkit-keyframes spin { 50% { -webkit-transform: rotateZ(90deg); } }
 }

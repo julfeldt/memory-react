@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import Tile from './components/Tile';
 import Panel from './components/Panel';
+/*
+import Retry from './components/Retry';
+*/
 
 let backTileId;
 let tileImages = [];
@@ -26,6 +29,7 @@ const allFrontTiles = {
         "family/10.jpg",
         "family/11.jpg",
         "family/12.jpg",
+        "family/13.jpg",
     ],
     transport: [
         "transport/0.jpg",
@@ -79,6 +83,50 @@ const allFrontTiles = {
     ]
 };
 
+let audioContext;
+let playSoundBuffer;
+let source;
+
+const maxTiles = 20;
+
+function init() {
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioContext = new AudioContext();
+}
+
+
+// TODO: cache sounds
+function loadNote(folder,id) {
+    var request = new XMLHttpRequest();
+    request.open("GET", "audio/"+folder+"/"+id+".m4a", true);
+    request.responseType = "arraybuffer";
+    request.onload = function() {
+        audioContext.decodeAudioData(request.response, function(buffer) {
+            playSoundBuffer = buffer;
+            playSound();
+        }, function(error) {
+            console.error("decodeAudioData error", error);
+        });
+    };
+    request.send();//start doing something async
+}
+
+function stopSound() {
+    if (source) {
+        source.stop(0);
+    }
+}
+
+function playSound() {
+    stopSound();
+    source = audioContext.createBufferSource();
+    source.buffer = playSoundBuffer;
+    source.connect(audioContext.destination);
+    source.start(0);
+}
+
+init();
+
 class App extends Component {
 
     constructor() {
@@ -97,12 +145,12 @@ class App extends Component {
                 const audio = document.createElement("audio");
                 audio.setAttribute("data-key", index);
                 audio.setAttribute("src", `audio/${category}/${index}.m4a`);
+                audio.setAttribute("preload","auto");
                 div.appendChild(audio);
                 document.body.appendChild(div);
             });
         })
     }
-
 
     /**
      * Randomize array element order in-place.
@@ -135,23 +183,22 @@ class App extends Component {
         tiles = this.shuffleArray(tiles);
 
         // randomingly trim exceeding tiles - cleanup needed
-        const max = 20;
-        if (tiles.length > max) {
+        if (tiles.length > maxTiles) {
             const exclude = [];
-            const diff = tiles.length/2 - max/2;
+            const diff = tiles.length/2 - maxTiles/2;
             for (let i = 0 ; i < diff ; i++) {
                 while(true) {
                     let id = getRandomTileId(tiles.length/2);
                     if (exclude.findIndex(tId => tId === id)) {
                         const tile = tiles.find(tile => tile.id === id);
-                        exclude.push(tile.src);
-                        break;
+                        if (!exclude.includes(tile.src)){
+                            exclude.push(tile.src);
+                            break;
+                        }
                     }
                 }
             }
-            tiles = tiles.filter(tile => {
-                return exclude.findIndex(src => src === tile.src) === -1;
-            });
+            tiles = tiles.filter(tile => exclude.findIndex(src => src === tile.src) === -1);
         }
 
         this.setState({
@@ -161,12 +208,7 @@ class App extends Component {
 
     // TODO: move player stuff to own module ?
     playAudio(audioId, category = selectedCategory) {
-        const audio = document.querySelector(`div[data-category="${category}"] audio[data-key="${audioId}"]`);
-        if (!audio) {
-          return;
-        }
-        audio.currentTime = 0;
-        audio.play();
+        loadNote(category,audioId);
     }
 
     playTile(tileId) {
@@ -180,8 +222,7 @@ class App extends Component {
     }
 
     playEnd() {
-        winAudio.currentTime = 0;
-        winAudio.play();
+        this.playAudio("win","end");
     }
 
     showTile(tileId) {
@@ -256,10 +297,8 @@ class App extends Component {
 
     // load new tiles with the selected category
     loadCategory(category) {
-        if (!winAudio.paused) {
-            // kill the end music, since a new game is started
-            winAudio.pause();
-        }
+        // stop any running sounds e.g. the winning tune
+        stopSound();
         tileImages = [...allFrontTiles[category]];
         selectedCategory = category;
         backTileId = Object.keys(allFrontTiles).findIndex(c => c === category);
@@ -269,12 +308,17 @@ class App extends Component {
     render() {
         return (
           <div className="App">
-            <Panel loadCategory={this.loadCategory}/>
-            <ul className="list">
-                {this.state.tiles && this.state.tiles.map(tile => {
-                  return <Tile key={tile.id} tile={tile} showTile={this.showTile} backTileId={backTileId} />
-                })}
-            </ul>
+            <div className="use-portrait">
+              <img className="ipad" src="images/ipad-portrait.png" alt="device" />
+            </div>
+            <div className="game">
+                <Panel loadCategory={this.loadCategory}/>
+                <ul className="list">
+                    {this.state.tiles && this.state.tiles.map(tile => {
+                      return <Tile key={tile.id} tile={tile} showTile={this.showTile} backTileId={backTileId} />
+                    })}
+                </ul>
+            </div>
           </div>
         );
     }
