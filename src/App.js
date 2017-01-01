@@ -10,9 +10,6 @@ let backTileId;
 let tileImages = [];
 let selectedCategory;
 
-// keep a reference to it, so it can be stopped anytime
-const winAudio = document.querySelector("div[data-category='end'] audio[data-key='0']");
-
 // images used for the tiles group by categories
 const allFrontTiles = {
     family: [
@@ -94,6 +91,9 @@ function init() {
     audioContext = new AudioContext();
 }
 
+function log(text) {
+    document.querySelector("#foo").innerHTML += "\n" + text;
+}
 
 // TODO: cache sounds
 function loadNote(folder,id) {
@@ -217,7 +217,7 @@ class App extends Component {
     }
 
     playMatch() {
-        const audioId = Math.floor((Math.random() * document.querySelector("div[data-category='match']").children.length));
+        const audioId = Math.floor((Math.random() * 5));
         this.playAudio(audioId,"match");
     }
 
@@ -226,7 +226,6 @@ class App extends Component {
     }
 
     showTile(tileId) {
-
         var tile = this.state.tiles.find(tile => tile.id === tileId);
         if (tile.selected || tile.match) {
             return;
