@@ -91,10 +91,6 @@ function init() {
     audioContext = new AudioContext();
 }
 
-function log(text) {
-    document.querySelector("#foo").innerHTML += "\n" + text;
-}
-
 // TODO: cache sounds
 function loadNote(folder,id) {
     var request = new XMLHttpRequest();
