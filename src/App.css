@@ -29,7 +29,7 @@
 	width: 200px;
 }
 
-@media screen and (orientation: landscape) {
+@media screen and (orientation: xlandscape) {
    .game {
    	display: none;
    }

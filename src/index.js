@@ -4,7 +4,6 @@ import App from './App';
 import './index.css';
 
 // Polyfills
-
 Array.prototype.includes = Array.prototype.includes||function(searchElement , fromIndex) {
     'use strict';
     if (!this) {
