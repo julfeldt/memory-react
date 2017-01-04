@@ -81,7 +81,7 @@ const allFrontTiles = {
     ]
 };
 
-const maxTiles = 30;
+const maxTiles = 20;
 
 
 class App extends Component {
@@ -98,7 +98,6 @@ class App extends Component {
      * Using Durstenfeld shuffle algorithm.
      */
     shuffleArray(array) {
-        return array;
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         const temp = array[i];
@@ -165,7 +164,7 @@ class App extends Component {
     }
 
     playEnd() {
-        this.playAudio("win","end");
+        this.playAudio(0,"end");
     }
 
     showTile(tileId) {
