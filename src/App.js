@@ -168,7 +168,8 @@ class App extends Component {
     }
 
     playEnd() {
-        this.playAudio(0,"end");
+        const audioId = Math.floor((Math.random() * 2));
+        this.playAudio(audioId,"end");
     }
 
     showTile(tileId) {
