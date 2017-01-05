@@ -83,6 +83,10 @@ const allFrontTiles = {
 
 const maxTiles = 20;
 
+// Disable scrolling
+document.addEventListener('touchmove', function (e) {
+    e.preventDefault();
+});
 
 class App extends Component {
 
@@ -223,7 +227,7 @@ class App extends Component {
             }
 
             // If all tiles are matched, the game is over so the play the winning sound.
-            if (matchTotal === 20) {
+            if (matchTotal === maxTiles) {
                 this.playEnd();
             }
         }
@@ -239,7 +243,7 @@ class App extends Component {
     // load new tiles with the selected category
     loadCategory(category) {
         // stop any running sounds e.g. the winning tune
-        stopSound();
+        stopSound(true);
         tileImages = [...allFrontTiles[category]];
         selectedCategory = category;
         backTileId = Object.keys(allFrontTiles).findIndex(c => c === category);
