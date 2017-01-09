@@ -248,6 +248,7 @@ class App extends Component {
         tileImages = [...allFrontTiles[category]];
         selectedCategory = category;
         backTileId = Object.keys(allFrontTiles).findIndex(c => c === category);
+        this.playAudio(backTileId,"category");
         this.createTiles();
     }
 
