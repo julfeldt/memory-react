@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 
+
 // Polyfills
+// eslint-disable-next-line
 Array.prototype.includes = Array.prototype.includes||function(searchElement , fromIndex) {
     if (!this) {
       throw new TypeError('Array.prototype.includes called on null or undefined');

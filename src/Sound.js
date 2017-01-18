@@ -1,24 +1,41 @@
 import Base64Binary from './Base64';
 
+
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
-const myAudioContext = new AudioContext();
-const sounds = {};
+let myAudioContext = new AudioContext();
 let mySource;
 let audioPlaying = false;
 
-// Play initial sound to fix the elusive distortion issue (https://stackoverflow.com/questions/17892345/webkit-audio-distorts-on-ios-6-iphone-5-first-time-after-power-cycling)
-function playInitSound() {
-    const source = myAudioContext.createBufferSource();
-    source.buffer = myAudioContext.createBuffer(1, 1, 48000);
-    source.connect(myAudioContext.destination);
-    if (source.start) {
-        source.start(0);
-    } else {
-        source.noteOn(0);
-    }
-};
+function createAudioContext (desiredSampleRate) {
+  var AudioCtor = window.AudioContext || window.webkitAudioContext
 
-playInitSound();
+  desiredSampleRate = typeof desiredSampleRate === 'number'
+    ? desiredSampleRate
+    : 44100
+  var context = new AudioCtor()
+
+  // Check if hack is necessary. Only occurs in iOS6+ devices
+  // and only when you first boot the iPhone, or play a audio/video
+  // with a different sample rate
+  if (/(iPhone|iPad)/i.test(navigator.userAgent) &&
+      context.sampleRate !== desiredSampleRate) {
+    var buffer = context.createBuffer(1, 1, desiredSampleRate)
+    var dummy = context.createBufferSource()
+    dummy.buffer = buffer
+    dummy.connect(context.destination)
+    dummy.start(0)
+    dummy.disconnect()
+
+    context.close() // dispose old context
+    context = new AudioCtor()
+  }
+
+  return context
+}
+
+document.addEventListener('touchend', function (e) {
+    myAudioContext = createAudioContext(44100);
+});
 
 // Sounds encoded as base 64
 var soundsBase64 = {

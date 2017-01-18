@@ -1,4 +1,4 @@
-// TODO: Move to helper
+/* eslint-disable */
 const Base64Binary = {
     _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
 
