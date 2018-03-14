@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Tile from './components/Tile';
 import Panel from './components/Panel';
-import {play,stopSound} from './Sound';
+import { play, stopSound } from './Sound';
 /*
 import Retry from './components/Retry';
 */
@@ -28,6 +28,7 @@ const allFrontTiles = {
         "family/11.jpg",
         "family/12.jpg",
         "family/13.jpg",
+        "family/14.jpg",
     ],
     transport: [
         "transport/0.jpg",
@@ -84,17 +85,17 @@ const allFrontTiles = {
 const maxTiles = 20;
 
 // Disable scrolling
-document.addEventListener('touchmove', function (e) {
+document.addEventListener('touchmove', function(e) {
     e.preventDefault();
 });
 
 class App extends Component {
 
     constructor() {
-      super();
-      this.state = {};
-      this.showTile = this.showTile.bind(this);
-      this.loadCategory = this.loadCategory.bind(this);
+        super();
+        this.state = {};
+        this.showTile = this.showTile.bind(this);
+        this.loadCategory = this.loadCategory.bind(this);
     }
 
     /**
@@ -102,13 +103,13 @@ class App extends Component {
      * Using Durstenfeld shuffle algorithm.
      */
     shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-      }
-      return array;
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+        return array;
     }
 
     createTiles() {
@@ -130,13 +131,13 @@ class App extends Component {
         // randomingly trim exceeding tiles - cleanup needed
         if (tiles.length > maxTiles) {
             const exclude = [];
-            const diff = tiles.length/2 - maxTiles/2;
-            for (let i = 0 ; i < diff ; i++) {
-                while(true) {
-                    let id = getRandomTileId(tiles.length/2);
+            const diff = tiles.length / 2 - maxTiles / 2;
+            for (let i = 0; i < diff; i++) {
+                while (true) {
+                    let id = getRandomTileId(tiles.length / 2);
                     if (exclude.findIndex(tId => tId === id)) {
                         const tile = tiles.find(tile => tile.id === id);
-                        if (!exclude.includes(tile.src)){
+                        if (!exclude.includes(tile.src)) {
                             exclude.push(tile.src);
                             break;
                         }
@@ -164,12 +165,12 @@ class App extends Component {
 
     playMatch() {
         const audioId = Math.floor((Math.random() * 5));
-        this.playAudio(audioId,"match");
+        this.playAudio(audioId, "match");
     }
 
     playEnd() {
         const audioId = Math.floor((Math.random() * 2));
-        this.playAudio(audioId,"end");
+        this.playAudio(audioId, "end");
     }
 
     showTile(tileId) {
@@ -181,12 +182,12 @@ class App extends Component {
         let matching = false;
 
         const tiles = [];
-        const selectedCount = this.state.tiles.reduce((total,tile) => {
+        const selectedCount = this.state.tiles.reduce((total, tile) => {
             if (tile.selected) {
                 total++;
             }
             return total;
-        },0);
+        }, 0);
 
         // TODO: cleanup
         if (selectedCount === 2) {
@@ -238,7 +239,7 @@ class App extends Component {
             this.playTile(tileId);
         }
 
-        this.setState({tiles});
+        this.setState({ tiles });
     }
 
     // load new tiles with the selected category
@@ -248,13 +249,13 @@ class App extends Component {
         tileImages = [...allFrontTiles[category]];
         selectedCategory = category;
         backTileId = Object.keys(allFrontTiles).findIndex(c => c === category);
-        this.playAudio(backTileId,"category");
+        this.playAudio(backTileId, "category");
         this.createTiles();
     }
 
     render() {
         return (
-          <div className="App">
+            <div className="App">
             <div className="use-portrait">
               <img className="ipad" src="images/ipad-portrait.png" alt="device" />
             </div>
