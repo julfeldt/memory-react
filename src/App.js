@@ -29,6 +29,7 @@ const allFrontTiles = {
         "family/12.jpg",
         "family/13.jpg",
         "family/14.jpg",
+        "family/15.jpg"
     ],
     transport: [
         "transport/0.jpg",
